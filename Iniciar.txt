@@ -1,0 +1,6 @@
+# 1. Abrí terminal en la carpeta donde están los archivos
+# 2. Ejecutá:
+node servidor.js
+
+# 3. Abrí en el navegador:
+http://localhost:3000

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Préstamos</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/dist/tabler-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── Encabezado ── -->
+  <div class="header">
+    <div class="header-icon"><i class="ti ti-coin"></i></div>
+    <div class="header-text">
+      <h1>Gestión de préstamos</h1>
+      <p>Registrá, seguí y cobrá cada préstamo fácilmente</p>
+    </div>
+  </div>
+
+  <!-- ── Panel de estadísticas ── -->
+  <div class="stats">
+    <div class="stat">
+      <div class="s-label">Total prestado</div>
+      <div class="s-val" id="stat-total">$0,00</div>
+    </div>
+    <div class="stat">
+      <div class="s-label">Activos</div>
+      <div class="s-val amber" id="stat-activos">0</div>
+    </div>
+    <div class="stat">
+      <div class="s-label">Cobrados</div>
+      <div class="s-val accent" id="stat-cobrados">0</div>
+    </div>
+  </div>
+
+  <!-- ── Formulario de nuevo préstamo (ancho completo) ── -->
+  <div class="form-card">
+    <h2><i class="ti ti-plus"></i> Nuevo préstamo</h2>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label for="inp-nombre">Nombre del deudor</label>
+        <input type="text" id="inp-nombre" placeholder="Ej: Juan Pérez" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="inp-monto">Monto prestado ($)</label>
+        <input type="number" id="inp-monto" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="inp-cuotas">Cantidad de cuotas</label>
+        <input type="number" id="inp-cuotas" placeholder="Ej: 6" min="1" max="120">
+      </div>
+      <div class="form-group full monto-cuota-group">
+        <label for="inp-monto-cuota">
+          <i class="ti ti-calculator"></i> Monto por cuota ($)
+        </label>
+        <div class="monto-cuota-row">
+          <input type="number" id="inp-monto-cuota" placeholder="Se calcula automáticamente…" min="0" step="0.01">
+          <div class="cuota-badge" id="cuota-badge">
+            <i class="ti ti-divide"></i>
+            <span id="preview-text">—</span>
+          </div>
+        </div>
+        <div class="form-hint">Completá monto y cuotas para el cálculo automático, o ingresá el valor manualmente.</div>
+      </div>
+      <div class="form-group full">
+        <label>¿Cuándo empieza a cobrar?</label>
+        <div class="date-row">
+          <select id="inp-mes">
+            <option value="">Mes de inicio</option>
+            <option>Enero</option><option>Febrero</option><option>Marzo</option>
+            <option>Abril</option><option>Mayo</option><option>Junio</option>
+            <option>Julio</option><option>Agosto</option><option>Septiembre</option>
+            <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
+          </select>
+          <input type="number" id="inp-dia" placeholder="Día (1-31)" min="1" max="31">
+        </div>
+      </div>
+    </div>
+    <button class="btn-add" id="btn-add">
+      <i class="ti ti-plus"></i> Agregar préstamo
+    </button>
+  </div>
+
+  <!-- ── Lista de préstamos + Calendario ── -->
+  <div class="lista-layout">
+
+    <!-- Columna izquierda -->
+    <div>
+      <div class="section-top">
+        <div class="section-title">
+          <i class="ti ti-list"></i> Préstamos registrados
+        </div>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="active">Activos</button>
+          <button class="filter-btn" data-filter="paid">Cobrados</button>
+        </div>
+      </div>
+      <div class="loans-list" id="loans-list"></div>
+    </div>
+
+    <!-- Columna derecha: calendario compacto sticky -->
+    <div class="calendar-card" id="calendar-card">
+      <div class="cal-header">
+        <button class="cal-nav" id="cal-prev"><i class="ti ti-chevron-left"></i></button>
+        <div class="cal-title" id="cal-title">Mayo 2026</div>
+        <button class="cal-nav" id="cal-next"><i class="ti ti-chevron-right"></i></button>
+      </div>
+      <div class="cal-weekdays">
+        <span>Do</span><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-tooltip" id="cal-tooltip"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Notificación flotante -->
+<div class="toast" id="toast"></div>
+
+<!-- Modal de edición -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3><i class="ti ti-edit"></i> Editar préstamo</h3>
+      <button class="modal-close" id="modal-close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Nombre del deudor</label>
+        <input type="text" id="edit-nombre" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Monto prestado ($)</label>
+        <input type="number" id="edit-monto" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Cantidad de cuotas</label>
+        <input type="number" id="edit-cuotas" min="1" max="120">
+      </div>
+      <div class="form-group full">
+        <label>Monto por cuota ($)</label>
+        <input type="number" id="edit-monto-cuota" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Mes de inicio</label>
+        <select id="edit-mes">
+          <option value="">Mes de inicio</option>
+          <option>Enero</option><option>Febrero</option><option>Marzo</option>
+          <option>Abril</option><option>Mayo</option><option>Junio</option>
+          <option>Julio</option><option>Agosto</option><option>Septiembre</option>
+          <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Día de cobro</label>
+        <input type="number" id="edit-dia" min="1" max="31" placeholder="Día (1-31)">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="modal-cancel">Cancelar</button>
+      <button class="btn-save" id="modal-save"><i class="ti ti-check"></i> Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
