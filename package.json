@@ -1,0 +1,22 @@
+{
+  "name": "pagina-prestamos-optimizada",
+  "version": "1.0.0",
+  "description": "App web local para registrar y hacer seguimiento de préstamos personales. Corre en el navegador desde tu propia computadora — sin internet, sin servicios externos, sin costo mensual.",
+  "main": "servidor.js",
+  "scripts": {
+    
+    "start": "node servidor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OrlezTh/Pagina-prestamos-optimizada.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/OrlezTh/Pagina-prestamos-optimizada/issues"
+  },
+  "homepage": "https://github.com/OrlezTh/Pagina-prestamos-optimizada#readme"
+}
