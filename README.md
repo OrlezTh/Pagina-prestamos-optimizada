@@ -105,14 +105,6 @@ Cada cliente muestra:
 
 ---
 
-## Capturas
-
-| Formulario | Lista de préstamos | Calendario |
-|---|---|---|
-| *(agregar screenshot)* | *(agregar screenshot)* | *(agregar screenshot)* |
-
----
-
 ## Próximas mejoras
 
 - [ ] Exportar resumen a PDF
