@@ -68,7 +68,7 @@ Abrí `index.html` con doble click. Los datos se guardan en `localStorage` del n
 ---
 | Formulario | Lista de préstamos |
 | --- | --- |
-| ![Lobby](screenshots/lobby.png) | ![Detalle](screenshots/detalle.png) |
+| ![Lobby](lobby.png) | ![Detalle](detalle.png) |
 ---
 
 ## Estructura del proyecto
