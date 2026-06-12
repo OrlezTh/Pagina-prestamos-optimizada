@@ -66,6 +66,10 @@ Abrí `index.html` con doble click. Los datos se guardan en `localStorage` del n
 > ⚠ Con esta opción los datos se pierden si limpiás el historial del navegador.
 
 ---
+| Formulario | Lista de préstamos |
+| --- | --- |
+| ![Lobby](screenshots/lobby.png) | ![Detalle](screenshots/detalle.png) |
+---
 
 ## Estructura del proyecto
 
